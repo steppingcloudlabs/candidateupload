@@ -7,11 +7,22 @@
   "private": true,
   "dependencies": {
     "@sap/cds": "^8",
-    "express": "^4"
+    "@sap/cds-odata-v2-adapter-proxy": "^1.9.21",
+    "@sap/hdbext": "^8.1.9",
+    "@sap/xsenv": "^5.6.1",
+    "@sap/xssec": "^4.8.0",
+    "axios": "^1.10.0",
+    "body-parser": "^2.2.0",
+    "cds-swagger-ui-express": "^0.10.0",
+    "cors": "^2.8.5",
+    "csv-parse": "^5.6.0",
+    "express": "^4",
+    "multer": "^2.0.1",
+    "passport": "^0.7.0"
   },
   "devDependencies": {
-    "@cap-js/sqlite": "^1",
-    "@cap-js/cds-types": "^0.10.0"
+    "@cap-js/cds-types": "^0.10.0",
+    "@cap-js/sqlite": "^1"
   },
   "scripts": {
     "start": "cds-serve"
