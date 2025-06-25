@@ -3,7 +3,7 @@ const cors = require('cors');
 const proxy = require('@sap/cds-odata-v2-adapter-proxy');
 const { parse } = require('csv-parse/sync');
 const xsenv = require('@sap/xsenv');
-const multer = require('multer');           // <-- add this
+const multer = require('multer');  
 const upload = multer();
 const bodyParser = require('body-parser');
 const cds_swagger = require('cds-swagger-ui-express');
@@ -16,11 +16,9 @@ cds.on('bootstrap', app => {
   app.use(cors({ origin: 'http://localhost:8080' }));
   app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
   app.use(bodyParser.json({ limit: '50mb' }));
-  app.use(bodyParser.json({ limit: '50mb' }));
   app.use(bodyParser.text({ limit: '50mb' }));
   app.use(proxy());
   app.use(bodyParser.text({ limit: '50mb' }));
-  app.use(proxy());
   app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
@@ -34,7 +32,7 @@ cds.on('bootstrap', app => {
 
   
 app.post('/upload-csv', upload.single('file'), async (req, res) => {
-  
+
   try {
     if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
     const csvString = req.file.buffer.toString();
@@ -56,7 +54,6 @@ app.post('/upload-csv', upload.single('file'), async (req, res) => {
     });
   }
 });
-
 
   app.use(cds_swagger());
 

@@ -65,20 +65,6 @@ srv.on(["CREATE"], candidateFileUpload, async (req) => {
       primaryEmail: candidate.primaryEmail
     }));
     
-    //  const body = {
-    //   __metadata: {
-    //     uri: "https://apisalesdemo8.successfactors.com/odata/v2/Candidate",
-    //     type: "SFOData.Candidate"
-    //   },
-    //   candidate: candidates.map(candidate => ({
-    //     country: candidate.country,
-    //     city1: candidate.city1,
-    //     firstName: candidate.firstName,
-    //     lastName: candidate.lastName,
-    //     primaryEmail: candidate.primaryEmail
-    //   }))
-    // };
-
     console.log("Upsert body:", body);
 
     const result = await axios.post(url, body, { headers });
