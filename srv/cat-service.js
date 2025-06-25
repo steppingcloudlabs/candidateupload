@@ -44,6 +44,8 @@ srv.on(["CREATE"], candidateFileUpload, async (req) => {
     // Log input for debugging
     console.log("Processing candidates:", candidates.length);
 
+    console.log("candidates:  ", candidates);
+
     const url = 'https://apisalesdemo8.successfactors.com/odata/v2/upsert?workflowConfirmed=true';
     const headers = {
       'Content-Type': 'application/json',
@@ -62,8 +64,25 @@ srv.on(["CREATE"], candidateFileUpload, async (req) => {
       lastName: candidate.lastName,
       primaryEmail: candidate.primaryEmail
     }));
+    
+    //  const body = {
+    //   __metadata: {
+    //     uri: "https://apisalesdemo8.successfactors.com/odata/v2/Candidate",
+    //     type: "SFOData.Candidate"
+    //   },
+    //   candidate: candidates.map(candidate => ({
+    //     country: candidate.country,
+    //     city1: candidate.city1,
+    //     firstName: candidate.firstName,
+    //     lastName: candidate.lastName,
+    //     primaryEmail: candidate.primaryEmail
+    //   }))
+    // };
+
+    console.log("Upsert body:", body);
 
     const result = await axios.post(url, body, { headers });
+    console.log("Upsert result:", result.data);
 
     // Process results (unchanged)
     let results = [];
@@ -78,7 +97,21 @@ srv.on(["CREATE"], candidateFileUpload, async (req) => {
     }
 
     if (results.length === 0) {
-      return { message: "No data upserted" };
+      //  error messages from the response
+      let errorMsg = "No data upserted";
+      if (result.data?.d) {
+        const errorMessages = result.data.d
+          .filter(item => item.status !== "OK")
+          .map(item => item.message)
+          .filter(Boolean);
+        if (errorMessages.length > 0) {
+          errorMsg += ": " + errorMessages.join("; ");
+        }
+      }
+      return {
+        status: 204,
+        message: errorMsg
+      };
     }
 
     // Return message and array of ids
